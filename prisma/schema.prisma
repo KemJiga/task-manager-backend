@@ -1,0 +1,54 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+model Activity {
+  id         Int      @id @default(autoincrement())
+  startDate  DateTime
+  endDate    DateTime
+  complexity Int
+  tasks      Task[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+  deletedAt  DateTime?
+}
+
+model Task {
+  id           Int       @id @default(autoincrement())
+  activity     Activity  @relation(fields: [activityId], references: [id])
+  activityId   Int
+  title        String
+  description  String
+  startDate    DateTime
+  endDate      DateTime
+  extendDates  DateTime[]
+  complexity   Int
+  resources    String[]
+  comments     Comment[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+  deletedAt  DateTime?
+}
+
+model Comment {
+  id        Int         @id @default(autoincrement())
+  text      String
+  type      CommentType
+  task      Task        @relation(fields: [taskId], references: [id])
+  taskId    Int
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now())
+  deletedAt DateTime?
+}
+
+enum CommentType {
+  FINISHED
+  CLOSED
+  EXTENDED
+}

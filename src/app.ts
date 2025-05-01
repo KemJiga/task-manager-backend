@@ -1,22 +1,51 @@
-import express, { Express, Request, Response } from 'express';
+import 'module-alias/register';
+import express, { Express } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import prisma from '@/config/prismaConnect';
+
+import router from '@/routers';
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json());
+const allowedOrigins = [
+  'http://localhost:5173'
+  // 'production url'
+]
+
+const corsOptions = {
+  credentials: true,
+  origin: (origin: any, callback: any) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}
+
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
+app.use(cookieParser());
 
-// Test route
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'Welcome to Task Manager API' });
-});
+async function bootstrap() {
+  try {
+    await prisma.$connect();
+    app.listen(port, () => {
+      console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.log('Failed to connet to database', error);
+    process.exit(1);
+  }
+}
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
+app.use(express.json());
+app.use('/api', router);
+
+bootstrap();
