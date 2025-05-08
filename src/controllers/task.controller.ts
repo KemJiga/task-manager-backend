@@ -1,14 +1,23 @@
 import TaskService from "@/services/task.service";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 const taskService = new TaskService();
 
 class TaskController {
-    async getTasks (req: Request, res: Response) {
+    async getAllTasksInActivity (req: Request, res: Response, next: NextFunction) {
         try {
             const task = await taskService.getTasks();
-            return res.status(201).json(task);
+            res.status(200).json(task);
         } catch (error) {
-            return res.status(500).json(error);
+            next(error);
+        }
+    }
+
+    async createTask (req: Request, res: Response, next: NextFunction) {
+        try {
+            const task = await taskService.createTask(req.body);
+            res.status(201).json(task);
+        } catch (error) {
+            next(error);
         }
     }
 }
