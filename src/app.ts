@@ -11,12 +11,12 @@ import router from '@/routers';
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 const allowedOrigins = [
   'http://localhost:5173'
   // 'production url'
-]
+];
 
 const corsOptions = {
   credentials: true,
@@ -32,6 +32,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(cookieParser());
+app.use(express.json());
+app.use('/api', router);
 
 async function bootstrap() {
   try {
@@ -44,8 +46,5 @@ async function bootstrap() {
     process.exit(1);
   }
 }
-
-app.use(express.json());
-app.use('/api', router);
 
 bootstrap();
