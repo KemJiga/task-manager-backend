@@ -1,6 +1,6 @@
 import express from 'express';
-import userRouter from './user.router';
-import activityRouter from './activity.router'
+import userRouter from '@/routers/user.router';
+import activityRouter from '@/routers/activity.router'
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
-import TaskService from "@/services/task.service";
 import { NextFunction, Request, Response } from "express";
+import TaskService from "@/services/task.service";
 const taskService = new TaskService();
 
 class TaskController {

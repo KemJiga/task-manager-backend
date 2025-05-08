@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import ActivityController from '@/controllers/activity.controller';
-import taskRouter from './task.router'
+import taskRouter from '@/routers/task.router'
 
 const router = Router();
 const activityController = new ActivityController();

@@ -1,4 +1,4 @@
-import Task from "./task.interface";
+import Task from "@/interfaces/task.interface";
 
 export default interface Activity {
     userId: string;

@@ -1,5 +1,5 @@
-import ActivityService from '@/services/activity.service';
 import { NextFunction, Request, Response } from "express";
+import ActivityService from '@/services/activity.service';
 const activityService = new ActivityService();
 
 class ActivityController {
@@ -9,7 +9,7 @@ class ActivityController {
             const activity = await activityService.createActivity(req.body);
             res.status(201).json(activity);
         } catch (error) {
-            res.status(500).json({ error: error });
+            next(error);
         }
     }
 }
