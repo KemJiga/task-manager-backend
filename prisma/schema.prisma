@@ -10,6 +10,7 @@ generator client {
 
 model Activity {
   id         Int      @id @default(autoincrement())
+  userId     String   
   startDate  DateTime
   endDate    DateTime
   complexity Int
@@ -26,14 +27,16 @@ model Task {
   title        String
   description  String
   startDate    DateTime
-  endDate      DateTime
+  dueDate      DateTime
+  estimatedTime Float
   extendDates  DateTime[]
   complexity   Int
-  resources    String[]
+  status       TaskStatus
+  deliverables String[]
   comments     Comment[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now())
-  deletedAt  DateTime?
+  deletedAt    DateTime?
 }
 
 model Comment {
@@ -45,6 +48,12 @@ model Comment {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @default(now())
   deletedAt DateTime?
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
 }
 
 enum CommentType {
