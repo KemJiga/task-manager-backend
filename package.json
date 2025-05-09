@@ -13,7 +13,7 @@
     "copy-prisma-client": "copyfiles -u 1 src/generated/**/* dist/",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name $1",
-    "prisma:seed": "cross-env NODE_ENV=development node src/config/prismaSeed.ts"
+    "prisma:seed": "cross-env NODE_ENV=development ts-node-dev src/config/prismaSeed.ts"
   },
   "repository": {
     "type": "git",
